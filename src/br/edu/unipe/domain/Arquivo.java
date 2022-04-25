@@ -43,29 +43,6 @@ public class Arquivo {
 		return false;
 	}
 
-	public void removeLine(String conteudo) {
-		try {
-			
-			FileReader fileReader = new FileReader(file);
-			FileWriter arquivoEscrito = new FileWriter(file.getName(),true);
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			String line = "";
-			
-			while((line = bufferedReader.readLine()) != null) {
-				
-				if(!line.trim().equals(conteudo.trim())) {
-					arquivoEscrito.write(line+ "\r\n");
-				}
-				
-			}
-			arquivoEscrito.close();
-			fileReader.close();
-		} catch (IOException e) {
-			
-			System.err.println(e.getMessage());
-		}
-	}
-
 	@SuppressWarnings("null")
 	public String readAllStudensInFile() {
 		List<String> listDataStudents = null;
