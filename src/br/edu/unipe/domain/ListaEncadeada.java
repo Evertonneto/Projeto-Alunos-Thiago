@@ -8,7 +8,7 @@ import br.edu.unipe.models.Node;
 
 public class ListaEncadeada {
 	
-	Node primeiro;
+	public Node primeiro;
 	Node ultimo;
 	private Node posiscaoAtual;
 	
@@ -40,6 +40,5 @@ public class ListaEncadeada {
 	public boolean checkEmptyListDisciplinas(ListaEncadeada listaEncadeada) {
 		return listaEncadeada.primeiro == null;
 	}
-
 
 }
