@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import br.edu.unipe.domain.ActionsAlunos;
+import br.edu.unipe.domain.ListaEncadeada;
 import br.edu.unipe.models.Aluno;
 import br.edu.unipe.models.Disciplina;
 
@@ -18,32 +19,41 @@ class ActionsAlunosTest{
 	
 	private ActionsAlunos actionsAlunos;
 	private Disciplina disciplina;
-	private LinkedList<Disciplina> disciplinas;
 	private Aluno aluno;
-	private List<Aluno> alunos, mockListAlunos;
+	private ListaEncadeada listaDisciplinas;
+	
+	private Aluno[] alunos;
+	
 	
 	@BeforeEach
 	void setUp() {
 		
 		actionsAlunos = new ActionsAlunos();
 		disciplina = new Disciplina("ED",80);
-		disciplinas = new LinkedList<Disciplina>();
-		disciplinas.add(disciplina);
-		aluno = new Aluno("Matheus",2134, disciplinas);
-		alunos = new ArrayList<Aluno>();
+		listaDisciplinas = new ListaEncadeada();
 		
-		mockListAlunos = actionsAlunos.insertAlunoInList(alunos, aluno);
+		listaDisciplinas.createList();
+		listaDisciplinas.add(disciplina);
+		aluno = new Aluno("Matheus",2134, listaDisciplinas);
+		
+		
+		alunos = new Aluno[3];
+		
+		alunos = actionsAlunos.insertAlunoInList(alunos, aluno,0);
+		
 		//alunos.add(aluno);
 	}
 	
 	@Test
-	@DisplayName("Alunos: Inserindo aluno a lista")
-	void insertAlunoInList() {
+	@DisplayName("Alunos: verificando se a lista é vazia")
+	void verificarSeListaVazia() {
 		
-		List <Aluno> mockAlunos = actionsAlunos.insertAlunoInList(alunos, aluno);
 		
-		boolean isListEmpty = actionsAlunos.checkEmptyListAlunos(mockAlunos);
-		assertEquals(false, isListEmpty);
+		Aluno[] alunos = new Aluno[3];
+		
+		boolean isListNotEmpty  = actionsAlunos.checkEmptyListAlunos(alunos);
+	
+		assertEquals(false, isListNotEmpty);
 	}
 	
 	@Test
@@ -52,36 +62,24 @@ class ActionsAlunosTest{
 		
 		Aluno mockAluno1,mockAluno2,mockAluno3;
 		
-		mockAluno1 = new Aluno("Matheus",2143,disciplinas);
-		mockAluno1 = new Aluno("Danilo",2154,disciplinas);
-		mockAluno1 = new Aluno("Josemilson",2167,disciplinas);
+		mockAluno1 = new Aluno("Matheus",2143,listaDisciplinas);
+		mockAluno2 = new Aluno("Danilo",2154,listaDisciplinas);
+		mockAluno3 = new Aluno("Josemilson",2167,listaDisciplinas);
 		
-		List <Aluno> mockListAlunos = actionsAlunos.insertAlunoInList(alunos, aluno);
-		
-		for(int i = 0 ; i < 4; i++) {
-			actionsAlunos.insertAlunoInList(mockListAlunos, mockAluno1);
-		}
-		
+		Aluno mockListAlunos[] = actionsAlunos.insertAlunoInList(alunos, aluno, 0);
+	
 		boolean result = actionsAlunos.checkEmptyListAlunos(alunos);
 		
-		assertEquals(false,result);
+		assertEquals(true,result);
 	}
 
-	@Test
-	@DisplayName("Verificando se lista de aluno é vazia")
-	void test() {
-		
-		boolean result = actionsAlunos.checkEmptyListAlunos(mockListAlunos);
-		
-		assertEquals(false,result);
-	}
 	
 	@Test
 	@DisplayName("Aluno: Buscando um aluno pelo RGM")
 	void searchAluno() {
 		
 	
-		Aluno alunoEncontrado = actionsAlunos.searchStudent(2134, mockListAlunos);
+		Aluno alunoEncontrado = actionsAlunos.searchStudent(2134, alunos);
 		
 		assertEquals(2134, alunoEncontrado.getRGM());
 	}
@@ -91,29 +89,36 @@ class ActionsAlunosTest{
 	@DisplayName("Disciplina: Buscar disciplina")
 	void searchDisciplina() {
 		
-		Disciplina disciplina = actionsAlunos.searchDisciplina("ED",aluno);
+		ListaEncadeada listaEncadeada = new ListaEncadeada();
+		
+		listaEncadeada.add(disciplina);
+		
+		Disciplina disciplina = listaEncadeada.searchDisciplina(listaEncadeada,"ED");
 	    
 		assertEquals("ED", disciplina.getNomeDaDisciplina());
 	}
 	
-	@Test
-	@DisplayName("Disciplina: Removendo uma disciplina")
-	void removeDisciplina() {
-		
-		boolean result = actionsAlunos.removeDisciplina("ED",aluno);
-	    
-		assertEquals(true, result);
-	}
 	
 	
 	
 	@Test
 	@DisplayName("Disciplina: Verificando se lista de disciplinas é vazia")
 	void isEmptyListDisciplinas() {
-		boolean result = actionsAlunos.checkEmptyListDisciplinas(disciplinas);
-		assertEquals(false, result);
+		ListaEncadeada listaEncadeada = new ListaEncadeada();
+		ListaEncadeada listaEncadeada2 = new ListaEncadeada();
+		
+		boolean result = listaEncadeada.checkEmptyListDisciplinas(listaEncadeada2);
+		assertEquals(true, result);
 	}
 	
+	@Test
+	@DisplayName("Aluno: remover um aluno pelo RGM")
+	void removeAluno() {
+	
+		Aluno[] result = actionsAlunos.removeStudent(2134, alunos);
+		
+		assertEquals(1234, result[0].getRGM());
+	}
 	
 	
 	

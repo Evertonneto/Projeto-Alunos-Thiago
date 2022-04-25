@@ -1,79 +1,79 @@
 package br.edu.unipe.domain;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import br.edu.unipe.models.Aluno;
-import br.edu.unipe.models.Disciplina;
+import br.edu.unipe.models.Node;
 
 public class ActionsAlunos {
 
-	public boolean checkEmptyListAlunos(List<Aluno> alunos) {
-		return alunos.isEmpty();
-	}
 	
-	
-	public boolean checkEmptyListDisciplinas(LinkedList<Disciplina> disciplinas) {
-		return disciplinas.isEmpty();
+	public boolean checkEmptyListAlunos(Aluno[] alunos) {
+		return alunos[0] != null;
 	}
 	
 
-	public Aluno searchStudent(int rgmDoAluno, List<Aluno> alunos) {
+	public Aluno searchStudent(int rgmDoAluno, Aluno[] alunos) {
 		
 		Aluno alunoEncontrado = null;
-		if(alunos.size() !=0) {
+		if(alunos[0] != null) {
 			
-			for(Aluno aluno: alunos) {
-				 if (rgmDoAluno == aluno.getRGM()) {
-					 alunoEncontrado = aluno;
+			for(int indice = 0; indice < alunos.length; indice++) {
+				 
+				if (rgmDoAluno == alunos[indice].getRGM()) {
+					 alunoEncontrado = alunos[indice];
 				 }
-			}         
+			}
 		}
 		
 		return alunoEncontrado;
 	}
 
 
-	public Disciplina searchDisciplina(String nomeDaDisciplina, Aluno aluno) {
+
+	public Aluno[] insertAlunoInList(Aluno[] alunos, Aluno aluno, int posicao) {
+		alunos[posicao] = aluno;
 		
-		Disciplina disciplinaEncontrada  = null;
-		if(aluno.getDisciplinas().size() != 0) {
-			
-			for(Disciplina disciplina : aluno.getDisciplinas()) {
-				
-				if(nomeDaDisciplina == disciplina.getNomeDaDisciplina()) {
-				
-					disciplinaEncontrada = disciplina;
-				}
-			}
-	
-		}
-		return disciplinaEncontrada;
-	}
-
-
-	public boolean removeDisciplina(String nomeDaDisciplina, Aluno aluno) {
-		
-		if(aluno.getDisciplinas().size() != 0) {
-			
-			for(Disciplina disciplina : aluno.getDisciplinas()) {
-				
-				if(nomeDaDisciplina == disciplina.getNomeDaDisciplina()) {
-			
-					return aluno.getDisciplinas().remove(disciplina);
-				}
-			}
-	
-		}
-		return false;
-	}
-
-
-	public List<Aluno> insertAlunoInList(List<Aluno> alunos, Aluno aluno) {
-		alunos.add(aluno);
 		return alunos;
+	
 	}
 
+
+	public Aluno[] removeStudent(int rgmDoAluno, Aluno[] alunos) {
+		
+		Aluno[] novaListaDeAlunos = new Aluno[alunos.length -1];
+		
+		if(checkEmptyListAlunos(alunos)) {
+			
+			for(int posicao = 0, indice = 0; posicao < alunos.length; posicao++) {
+				
+				if(rgmDoAluno != alunos[posicao].getRGM()) {
+					novaListaDeAlunos[indice++] = alunos[posicao] ;
+					
+					return novaListaDeAlunos;
+				}
+			}
+			
+		}
+		return null;
+	}
+
+	public void printAllStudents(Aluno[] alunos) {
+		
+		for(int i= 0; i < alunos.length; i++) {
+			System.out.print(alunos[i].getNome()+" "+alunos[i].getRGM()+"  ");
+			
+			for (Node n = alunos[i].getListaDeDisciplinas().primeiro; n != null; n = n.getProximo()) {
+				
+				System.out.print(n.getDisciplina().getNomeDaDisciplina()+" ");
+				
+			}
+			
+			System.out.println();
+		}
+		
+		
+		
+	}
+	
 
 
 

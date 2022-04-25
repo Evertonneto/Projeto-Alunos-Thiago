@@ -1,18 +1,15 @@
 package br.edu.unipe.main;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import br.edu.unipe.domain.ActionsAlunos;
+import br.edu.unipe.domain.ListaEncadeada;
 import br.edu.unipe.models.Aluno;
 import br.edu.unipe.models.Disciplina;
 
 public class Main {
 
 	static ActionsAlunos actionsAlunos = new ActionsAlunos();
-	static List<Aluno> alunos = new ArrayList<Aluno>();
-	static LinkedList<Disciplina> disciplinas = new LinkedList<Disciplina>();
+	static Aluno alunos[] = new Aluno[2];
+	static ListaEncadeada listaDisciplinas = new ListaEncadeada();
 	static InputKeyboard inputKeyboard = new InputKeyboard();
 	
 	public static void main(String[] args) {
@@ -28,6 +25,8 @@ public class Main {
 		System.out.println("0 - Para encerrar o programa");
 		System.out.println("1 - Para adicionar alunos a lista ");
 		System.out.println("2 - Para buscar um aluno pelo rgm");
+		System.out.println("3 - Para remover um aluno pelo rgm");
+		System.out.println("4 - Para mostrar todos os alunos");
 		
 		int opcaoEscolhida = inputKeyboard.getInputInterger();
 		 
@@ -48,11 +47,46 @@ public class Main {
 				buscarUmAlunoEspecifico();
 				showOptinos();
 				break;
+			case 3:
+				removerUmAlunoDaLista();
+				showOptinos();
+			case 4:
+				mostrarTodosOsAlunos();
+				showOptinos();
 			default:
 				System.out.println("Opção invalida");
 				break;
 			}
 			
+		
+	}
+
+	private static void mostrarTodosOsAlunos() {
+		if(actionsAlunos.checkEmptyListAlunos(alunos)) {
+			actionsAlunos.printAllStudents(alunos);
+		}
+		
+	}
+
+	private static void removerUmAlunoDaLista() {
+		System.out.println("Digite o rgm do aluno a er removido: ");
+		int rgmDoAluno = inputKeyboard.getInputInterger();
+		
+		Aluno novaListaDeAlunos [] = null;
+		
+		try {
+				alunos = actionsAlunos.removeStudent(rgmDoAluno, alunos);
+			
+			if(actionsAlunos.checkEmptyListAlunos(alunos)) {
+				
+				System.out.println("Aluno removido \n\n");
+			}
+
+		}catch(Exception error) {
+			//System.err.println(error.getMessage());
+		}
+		
+		actionsAlunos.printAllStudents(alunos);
 		
 	}
 
@@ -73,9 +107,10 @@ public class Main {
 	}
 
 	private static void inserirAlunosNaLista() {
-		String nomeDaDisciplina = null;
+		ListaEncadeada listaisciplinas = null;
+		Aluno listaDeAlunos[] = null;
 		
-		for(int indice = 0; indice < 3; indice++) {
+		for(int indice = 0; indice < alunos.length; indice++) {
 			
 			System.out.println("Digite o nome do aluno: ");
 			String nomeDoAluno = inputKeyboard.getInputString();
@@ -84,23 +119,31 @@ public class Main {
 			int rgmDoAluno = inputKeyboard.getInputInterger();
 			
 			System.out.println("Digite o nome da disciplina:");
-			nomeDaDisciplina = inputKeyboard.getInputString();
+			String nomeDaDisciplina = inputKeyboard.getInputString();
+			
+			
+			listaisciplinas = addDisciplinas(nomeDaDisciplina);
+			Aluno novoAluno = creaeteNewStudent(nomeDoAluno,rgmDoAluno,listaisciplinas);
 			
 			System.out.println("Quer continuar a adicionar disciplinas(s ou n): ");
 			String adicionarDisciplina = inputKeyboard.getInputString();
+			novoAluno = adicionarMaisMaterias(adicionarDisciplina, novoAluno);
 			
-			adicionarMaisMaterias(adicionarDisciplina);
-			
-			addDisciplinas(nomeDaDisciplina);
-			
-			addAluno(nomeDoAluno,rgmDoAluno);
-			
+			addAluno(indice, novoAluno);
+		
 			
 		}
 		
+		actionsAlunos.printAllStudents(alunos);
 	}
 
-	private static void adicionarMaisMaterias(String adicionarDisciplina) {
+	private static Aluno creaeteNewStudent(String nomeDoAluno, int rgmDoAluno, ListaEncadeada listaisciplinas) {
+		Aluno aluno = new Aluno(nomeDoAluno,rgmDoAluno, listaisciplinas);
+		return aluno;
+		
+	}
+
+	private static Aluno adicionarMaisMaterias(String adicionarDisciplina, Aluno alunoInserido) {
 
 		
 		if (adicionarDisciplina.equals("s")) {
@@ -109,7 +152,7 @@ public class Main {
 				System.out.println("Digite o nome da disciplina:");
 				String nomeDaDisciplina = inputKeyboard.getInputString();
 				
-				addDisciplinas(nomeDaDisciplina);
+				alunoInserido = addMaisDisciplinas(alunoInserido,nomeDaDisciplina);
 				
 				System.out.println("Quer continuar a adicionar disciplinas(s ou n): ");
 				adicionarDisciplina = inputKeyboard.getInputString();
@@ -118,30 +161,49 @@ public class Main {
 			}while(!adicionarDisciplina.equals("n"));
 		}
 		
+		return alunoInserido;
+		
 	}
 	
 
-	private static void addDisciplinas(String nomeDaDisciplina) {
-	 
+	private static Aluno addMaisDisciplinas(Aluno alunoInserido, String nomeDaDisciplina) {
+	
 		if(nomeDaDisciplina != null) {
 			
 			Disciplina disciplina = new Disciplina(nomeDaDisciplina,80);
-			disciplinas.add(disciplina);
+			alunoInserido.getListaDeDisciplinas().add(disciplina);
+			
+			return alunoInserido;
 			
 		}else {
 			System.out.println("Ops!! parace que nenhuma disciplina foi adicionada");
 		}
+		return null;
+	}
+	
+
+	private static ListaEncadeada addDisciplinas(String nomeDaDisciplina) {
+	 
+		ListaEncadeada listaDisciplinas = new ListaEncadeada();
+	
+		if(nomeDaDisciplina != null) {
+			
+			Disciplina disciplina = new Disciplina(nomeDaDisciplina,80);
+			listaDisciplinas.add(disciplina);
+			
+			return listaDisciplinas;
+			
+		}else {
+			System.out.println("Ops!! parace que nenhuma disciplina foi adicionada");
+		}
+		return listaDisciplinas;
 		
 	}
 	
 
-	private static void addAluno(String nomeDoAluno, int rgmDoAluno) {
-		if(nomeDoAluno != null && rgmDoAluno != 0) {
-			
-			Aluno aluno = new Aluno(nomeDoAluno, rgmDoAluno, disciplinas);
-			alunos = actionsAlunos.insertAlunoInList(alunos, aluno);
-		}
-		
+	private static Aluno[] addAluno(int posicao, Aluno aluno) {
+			alunos = actionsAlunos.insertAlunoInList(alunos, aluno,posicao);
+			return alunos;
 	}
 
 
