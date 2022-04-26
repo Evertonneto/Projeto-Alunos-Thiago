@@ -13,19 +13,24 @@ import java.io.Writer;
 import java.util.List;
 
 import br.edu.unipe.models.Aluno;
+import br.edu.unipe.models.Node;
 
 public class Arquivo {
 
 	private String nomeDoArquivo;
-	public File file;
+	public  File file;
 
 	public Arquivo(String nomeDoArquivo) {
 		super();
 		this.file = new File(nomeDoArquivo);
 	}
 
-	public boolean verifyExistFile() {
+	public  boolean verifyExistFile() {
 		return file.isFile();
+	}
+	
+	public boolean deleteFile() {
+		return file.delete();
 	}
 
 	public boolean createFile(){
@@ -41,6 +46,34 @@ public class Arquivo {
 		}
 	
 		return false;
+	}
+	
+	public void writerInFile(Aluno alunos[]) {
+		
+		if(createFile()) {
+			try {
+				
+				FileWriter arquivoEscrito = new FileWriter(file.getName(),true);
+				BufferedWriter bufferedWriter = new BufferedWriter(arquivoEscrito);
+				
+				for(int i= 0; i < alunos.length; i++) {
+					
+					bufferedWriter.write(alunos[i].getNome()+"   "+alunos[i].getRGM());
+					for (Node n = alunos[i].getListaDeDisciplinas().primeiro; n != null; n = n.getProximo()) {
+						
+						bufferedWriter.write("  "+n.getDisciplina().getNomeDaDisciplina());
+					}
+					bufferedWriter.newLine();
+				}
+				
+				bufferedWriter.close();
+				
+			}catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
+		   return;	
+		}
+		removeAlunoUpdateFile(alunos);
 	}
 
 	@SuppressWarnings("null")
@@ -64,7 +97,33 @@ public class Arquivo {
 		return dataStudent;
 	}
 	
-	
+
+	public void removeAlunoUpdateFile(Aluno[] alunos) {
+		
+		if(deleteFile() || createFile()) {
+			try {
+				
+				FileWriter arquivoEscrito = new FileWriter(file.getName(),true);
+				BufferedWriter bufferedWriter = new BufferedWriter(arquivoEscrito);
+				
+				for(int i= 0; i < alunos.length; i++) {
+					
+					bufferedWriter.write(alunos[i].getNome()+"   "+alunos[i].getRGM());
+					for (Node n = alunos[i].getListaDeDisciplinas().primeiro; n != null; n = n.getProximo()) {
+						
+						bufferedWriter.write("  "+n.getDisciplina().getNomeDaDisciplina());
+					}
+					bufferedWriter.newLine();
+				}
+				
+				bufferedWriter.close();
+				
+			}catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
+			
+		}
+	}
 	
 	
 

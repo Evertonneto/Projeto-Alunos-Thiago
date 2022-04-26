@@ -42,18 +42,14 @@ public class ActionsAlunos {
 		Aluno[] novaListaDeAlunos = new Aluno[alunos.length -1];
 		
 		if(checkEmptyListAlunos(alunos)) {
-			
-			for(int posicao = 0, indice = 0; posicao < alunos.length; posicao++) {
-				
-				if(rgmDoAluno != alunos[posicao].getRGM()) {
-					novaListaDeAlunos[indice++] = alunos[posicao] ;
-					
-					return novaListaDeAlunos;
-				}
+			for (int i = 0, j = 0; i < alunos.length; i++) {
+			    if (rgmDoAluno != alunos[i].getRGM()) {
+			        novaListaDeAlunos[j++] = alunos[i];
+			    }
 			}
-			
 		}
-		return null;
+			
+		return novaListaDeAlunos;
 	}
 
 	public void printAllStudents(Aluno[] alunos) {

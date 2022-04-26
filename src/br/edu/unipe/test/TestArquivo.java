@@ -36,12 +36,6 @@ public class TestArquivo {
 		assertEquals(true, checkExistFile);
 	}
 	
-	@Test
-	@DisplayName("Arquivo: removendo aluno do arquivo")
-	void escreverNoArquivo() {
-		
-		arquivo.removeLine("Matheus");		
-	}
 	
 	@Test
 	@DisplayName("Arquivo: lendo conteudo do arquivo")

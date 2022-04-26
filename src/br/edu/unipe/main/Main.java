@@ -22,6 +22,7 @@ public class Main {
 	static ListaEncadeada listaDisciplinas = new ListaEncadeada();
 	static InputKeyboard inputKeyboard = new InputKeyboard();
 	static Arquivo arquivo = new Arquivo("listaDeAlunos.txt");
+	
 	public static void main(String[] args) {
 	
 		showOptinos();
@@ -60,6 +61,7 @@ public class Main {
 			case 3:
 				removerUmAlunoDaLista();
 				showOptinos();
+				break;
 			case 4:
 				mostrarTodosOsAlunos();
 				showOptinos();
@@ -85,20 +87,22 @@ public class Main {
 		Aluno novaListaDeAlunos [] = null;
 		
 		try {
-				alunos = actionsAlunos.removeStudent(rgmDoAluno, alunos);
+			novaListaDeAlunos = actionsAlunos.removeStudent(rgmDoAluno, alunos);
 			
 			if(actionsAlunos.checkEmptyListAlunos(alunos)) {
 				
 				System.out.println("Aluno removido \n\n");
 				
-				removeAlunoUpdateFile(alunos);
+				arquivo.removeAlunoUpdateFile(novaListaDeAlunos);
 			}
+			
+			actionsAlunos.printAllStudents(novaListaDeAlunos);
 
 		}catch(Exception error) {
-			//System.err.println(error.getMessage());
+			System.err.println(error.getMessage());
 		}
 		
-		actionsAlunos.printAllStudents(alunos);
+		
 		
 	}
 
@@ -144,7 +148,7 @@ public class Main {
 			addAluno(indice, novoAluno);
 			
 		}
-		saveDataStudentInFile();
+		arquivo.writerInFile(alunos);
 		actionsAlunos.printAllStudents(alunos);
 	}
 
@@ -217,61 +221,6 @@ public class Main {
 			return alunos;
 	}
 	
-	private static void saveDataStudentInFile() {
-		String nomeDaDisciplina = null;
-				
-		if(arquivo.createFile()) {
-			try {
-				
-				FileWriter arquivoEscrito = new FileWriter(arquivo.file.getName(),true);
-				BufferedWriter bufferedWriter = new BufferedWriter(arquivoEscrito);
-				
-				for(int i= 0; i < alunos.length; i++) {
-					
-					bufferedWriter.write(alunos[i].getNome()+"   "+alunos[i].getRGM());
-					for (Node n = alunos[i].getListaDeDisciplinas().primeiro; n != null; n = n.getProximo()) {
-						
-						bufferedWriter.write("  "+n.getDisciplina().getNomeDaDisciplina());
-					}
-					bufferedWriter.newLine();
-				}
-				
-				bufferedWriter.close();
-				
-			}catch (Exception e) {
-				System.err.println(e.getMessage());
-			}
-			
-		}
-		
-	}
-	
-	private static void removeAlunoUpdateFile(Aluno[] alunos) {
-		
-		if(arquivo.file.delete() && arquivo.createFile()) {
-			try {
-				
-				FileWriter arquivoEscrito = new FileWriter(arquivo.file.getName(),true);
-				BufferedWriter bufferedWriter = new BufferedWriter(arquivoEscrito);
-				
-				for(int i= 0; i < alunos.length; i++) {
-					
-					bufferedWriter.write(alunos[i].getNome()+"   "+alunos[i].getRGM());
-					for (Node n = alunos[i].getListaDeDisciplinas().primeiro; n != null; n = n.getProximo()) {
-						
-						bufferedWriter.write("  "+n.getDisciplina().getNomeDaDisciplina());
-					}
-					bufferedWriter.newLine();
-				}
-				
-				bufferedWriter.close();
-				
-			}catch (Exception e) {
-				System.err.println(e.getMessage());
-			}
-			
-		}
-	}
 
 
 }
