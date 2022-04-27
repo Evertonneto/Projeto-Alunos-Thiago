@@ -1,15 +1,15 @@
 package br.edu.unipe.models;
 
-public class Node {
+public class Ponteiro {
 	
-	public Node proximo;
+	public Ponteiro proximo;
 	private Disciplina disciplina;
 
 	
-	public Node getProximo() {
+	public Ponteiro getProximo() {
 		return proximo;
 	}
-	public void setProximo(Node proximo) {
+	public void setProximo(Ponteiro proximo) {
 		this.proximo = proximo;
 	}
 	public Disciplina getDisciplina() {

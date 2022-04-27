@@ -4,13 +4,13 @@ import java.util.LinkedList;
 
 import br.edu.unipe.models.Aluno;
 import br.edu.unipe.models.Disciplina;
-import br.edu.unipe.models.Node;
+import br.edu.unipe.models.Ponteiro;
 
 public class ListaEncadeada {
 	
-	public Node primeiro;
-	Node ultimo;
-	private Node posiscaoAtual;
+	public Ponteiro primeiro;
+	Ponteiro ultimo;
+	private Ponteiro posiscaoAtual;
 	
 	
 	public void createList() {
@@ -18,7 +18,7 @@ public class ListaEncadeada {
 	}
 	
 	public void add(Disciplina disciplina) {
-		Node novo = new Node();
+		Ponteiro novo = new Ponteiro();
 		novo.setDisciplina(disciplina);
 		novo.proximo  = primeiro;
 		primeiro = novo;
@@ -27,7 +27,7 @@ public class ListaEncadeada {
 	public Disciplina searchDisciplina(ListaEncadeada listaEncadeada, String nomeDaDisciplina) {
 		
 		Disciplina disciplinaEncontrada = null;
-		for (Node n = listaEncadeada.primeiro; n != null; n = n.getProximo()) {
+		for (Ponteiro n = listaEncadeada.primeiro; n != null; n = n.getProximo()) {
 				
 				if(nomeDaDisciplina == n.getDisciplina().getNomeDaDisciplina()) {
 					disciplinaEncontrada = n.getDisciplina();

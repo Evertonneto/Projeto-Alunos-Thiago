@@ -13,7 +13,7 @@ import java.io.Writer;
 import java.util.List;
 
 import br.edu.unipe.models.Aluno;
-import br.edu.unipe.models.Node;
+import br.edu.unipe.models.Ponteiro;
 
 public class Arquivo {
 
@@ -59,7 +59,8 @@ public class Arquivo {
 				for(int i= 0; i < alunos.length; i++) {
 					
 					bufferedWriter.write(alunos[i].getNome()+"   "+alunos[i].getRGM());
-					for (Node n = alunos[i].getListaDeDisciplinas().primeiro; n != null; n = n.getProximo()) {
+					
+					for (Ponteiro n = alunos[i].getListaDeDisciplinas().primeiro; n != null; n = n.getProximo()) {
 						
 						bufferedWriter.write("  "+n.getDisciplina().getNomeDaDisciplina());
 					}
@@ -76,28 +77,6 @@ public class Arquivo {
 		removeAlunoUpdateFile(alunos);
 	}
 
-	@SuppressWarnings("null")
-	public String readAllStudensInFile() {
-		List<String> listDataStudents = null;
-		String dataStudent = null;
-		try {
-			FileReader fileReader = new FileReader(file);
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			
-			while(bufferedReader.ready()) {
-				dataStudent = bufferedReader.readLine();
-				
-			}
-			
-			bufferedReader.close();
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-		}
-		
-		return dataStudent;
-	}
-	
-
 	public void removeAlunoUpdateFile(Aluno[] alunos) {
 		
 		if(deleteFile() || createFile()) {
@@ -109,7 +88,8 @@ public class Arquivo {
 				for(int i= 0; i < alunos.length; i++) {
 					
 					bufferedWriter.write(alunos[i].getNome()+"   "+alunos[i].getRGM());
-					for (Node n = alunos[i].getListaDeDisciplinas().primeiro; n != null; n = n.getProximo()) {
+					
+					for (Ponteiro n = alunos[i].getListaDeDisciplinas().primeiro; n != null; n = n.getProximo()) {
 						
 						bufferedWriter.write("  "+n.getDisciplina().getNomeDaDisciplina());
 					}
@@ -125,6 +105,4 @@ public class Arquivo {
 		}
 	}
 	
-	
-
 }

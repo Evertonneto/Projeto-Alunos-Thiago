@@ -1,7 +1,7 @@
 package br.edu.unipe.domain;
 
 import br.edu.unipe.models.Aluno;
-import br.edu.unipe.models.Node;
+import br.edu.unipe.models.Ponteiro;
 
 public class ActionsAlunos {
 
@@ -57,7 +57,7 @@ public class ActionsAlunos {
 		for(int i= 0; i < alunos.length; i++) {
 			System.out.print(alunos[i].getNome()+" "+alunos[i].getRGM()+"  ");
 			
-			for (Node n = alunos[i].getListaDeDisciplinas().primeiro; n != null; n = n.getProximo()) {
+			for (Ponteiro n = alunos[i].getListaDeDisciplinas().primeiro; n != null; n = n.getProximo()) {
 				
 				System.out.print(n.getDisciplina().getNomeDaDisciplina()+" ");
 				

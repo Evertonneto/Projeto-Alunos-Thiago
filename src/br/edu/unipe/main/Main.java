@@ -13,7 +13,7 @@ import br.edu.unipe.domain.Arquivo;
 import br.edu.unipe.domain.ListaEncadeada;
 import br.edu.unipe.models.Aluno;
 import br.edu.unipe.models.Disciplina;
-import br.edu.unipe.models.Node;
+import br.edu.unipe.models.Ponteiro;
 
 public class Main {
 

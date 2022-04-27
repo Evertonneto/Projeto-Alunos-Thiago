@@ -36,15 +36,4 @@ public class TestArquivo {
 		assertEquals(true, checkExistFile);
 	}
 	
-	
-	@Test
-	@DisplayName("Arquivo: lendo conteudo do arquivo")
-	void lerConteudoDoArquivo() {
-		String nomesDosAlunos = arquivo.readAllStudensInFile();
-		
-		
-		
-		assertEquals(true, nomesDosAlunos.equals("Matheus"));
-	}
-	
 }
